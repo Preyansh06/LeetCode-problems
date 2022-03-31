@@ -13,3 +13,24 @@ public:
         return maxm;
     }
 };
+//2nd approach but(slow)
+class Solution {
+public:
+    int minPairSum(vector<int>& nums) {
+        int n=nums.size(),s;
+        vector <int> sum;
+        int l=0;
+        int r=n-1;
+        sort(nums.begin(),nums.end());
+        for(int l=0;l<n/2;)
+        {
+            s=nums[l]+nums[r];
+            sum.push_back(s);
+            l++;
+            r--;
+            
+        }
+        int ans= *max_element(sum.begin(),sum.end());
+        return ans;
+    }
+};
