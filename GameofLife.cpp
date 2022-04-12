@@ -1,35 +1,46 @@
 class Solution {
 public:
-    vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k) {
-        int n=grid.size();
-        int m=grid[0].size();
-        vector<vector<int>> ans(n,vector<int>(m,0));
+    int rowsize,colsize;
+    
+    int getcount(int row,int col,vector<vector<int>> board)
+    {
+        int cnt=0;
+        cnt+= row-1>=0 && board[row-1][col] ? 1:0;
+        cnt+= row+1<rowsize && board[row+1][col] ? 1:0;
+        cnt+=row-1 >=0 && col-1>=0 && board[row-1][col-1] ? 1:0;
+        cnt+=row-1 >=0 && col+1<colsize && board[row-1][col+1] ? 1:0;
+        cnt+= col-1>=0 && board[row][col-1] ? 1:0;
+        cnt+= col+1<colsize && board[row][col+1] ? 1:0; 
+        cnt+=row+1 <rowsize && col-1>=0 && board[row+1][col-1] ? 1:0;
+        cnt+=row+1 <rowsize && col+1<colsize && board[row+1][col+1] ? 1:0;
         
-        while(k--)
+        return cnt;
+
+    }
+    void gameOfLife(vector<vector<int>>& board) {
+         rowsize=board.size();
+         colsize=board[0].size();
+        vector<vector<int>> tempboard;
+        tempboard = board;
+     
+        
+        for(int i=0;i<rowsize;i++)
         {
-            for(int i=0;i<n;i++)
+            for(int j=0;j<colsize;j++)
             {
-                for(int j=0;j<m;j++)
-                {
-                    if(j==(m-1))
-                    {
-                        if(i==(n-1))
-                        {
-                            ans[0][0]=grid[i][j];
-                        }
-                        else
-                            ans[i+1][0]=grid[i][j];
-                    }
-                    else
-                    {
-                        ans[i][j+1]=grid[i][j];
-                    }
-                    
-                }
+              int  livecount = getcount(i,j,tempboard);
+                if(board[i][j])
+            {
+                if(livecount<2 || livecount>3)
+                    board[i][j]=0;
+            }
+            else
+            {
+                board[i][j] = livecount==3 ? 1:0; 
+            }
             }
             
-            grid=ans;
         }
-        return grid;
+        
     }
 };
